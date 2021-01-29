@@ -14,6 +14,9 @@ env=siatting:
 alias=liah-giliau:
   tasks: [siatting, liah-giliau-job]
 
+alias=wav-giliau:
+  tasks: [siatting, wav-giliau-job]
+
 job=liah-giliau-job:
   use: ubuntu
   env:
@@ -27,30 +30,27 @@ job=liah-giliau-job:
     '
   mounts: [punte_giliau, ]
 
-job=suisiann-giliau-pianma:
+job=wav-giliau-job:
   use: ubuntu
   env:
   - PANPUN={env.PANPUN}
   command: |
     bash -eux -c '
       apt-get update
-      apt-get install -y sox
-      cp *csv /giliau/
+      apt-get install -y ffmpeg
+      cp *json /giliau/
       find . -type d -exec mkdir -p /giliau/{} \;
-      find . -name "*wav" -exec sox {} -b 16 -c 1 -r 16k /giliau/{} \;
+      find . -name "*mp3" -exec ffmpeg -i {} -b 16 -c 1 -r 16k /giliau/{}.wav \;
     '
   mounts: [punte_giliau, giliau, tshamsoo, data, ]
-  working-dir: /punte_giliau
-
-alias=suisiann-giliau:
-  tasks: [siatting, suisiann-giliau-pianma]
+  working-dir: /punte_giliau/
 
 mount=punte_giliau:
   bind: ./{env.PANPUN}
   path: /punte_giliau/
 
 mount=giliau:
-  bind: ./{env.PANPUN}-22050/
+  bind: ./{env.PANPUN}-wav/
   path: /giliau/
 
 mount=tshamsoo:
