@@ -32,6 +32,9 @@ alias=preprocess-wavernn:
 alias=wavernn:
   tasks: [siatting, wavernn-job, ]
 
+alias=huatsiann:
+  tasks: [siatting, huatsiann-job, ]
+
 job=liah-giliau-job:
   use: ubuntu
   env:
@@ -126,6 +129,7 @@ job=tacotron-gta-job:
   use: hunlian-khuanking
   env:
   - CUDA_VISIBLE_DEVICES=0
+  - PANPUN={env.PANPUN}
   command: |
     bash -eux -c '
       cp /tshamsoo/hparams.py .
@@ -151,6 +155,7 @@ job=wavernn-job:
   use: hunlian-khuanking
   env:
   - CUDA_VISIBLE_DEVICES=0
+  - PANPUN={env.PANPUN}
   command: |
     bash -eux -c '
       cp /tshamsoo/hparams.py .
@@ -161,10 +166,10 @@ job=wavernn-job:
     '
   mounts: [tshamsoo, data, checkpoints, outputs, ]
 
-
-job=huatsiann:
+job=huatsiann-job:
   use: hunlian-khuanking
   env:
+  - KU=A! a kay siqa.
   - CUDA_VISIBLE_DEVICES=1
   command: |
     bash -eux -c '
@@ -172,9 +177,9 @@ job=huatsiann:
       cp /tshamsoo/text_init.py utils/text/__init__.py
       cp /tshamsoo/symbols.py utils/text/symbols.py
       sed -i "s/required=True, //g" gen_tacotron.py
-      time python gen_tacotron.py --input_text "tak10-ke7 tsə2-hue1 lai7 tsʰit8-tʰə5 !" griffinlim
-      time python gen_tacotron.py --input_text "tak10-ke7 tsə2-hue1 lai7 tsʰit8-tʰə5 !" wavernn
-      time python gen_tacotron.py --input_text "tak10-ke7 tsə2-hue1 lai7 tsʰit8-tʰə5 !" wavernn --unbatched
+      time python gen_tacotron.py --force_cpu --input_text "$KU" griffinlim
+      #time python gen_tacotron.py --input_text "tak10-ke7 tsə2-hue1 lai7 tsʰit8-tʰə5 !" wavernn
+      #time python gen_tacotron.py --input_text "tak10-ke7 tsə2-hue1 lai7 tsʰit8-tʰə5 !" wavernn --unbatched
     '
   mounts: [tshamsoo, checkpoints, outputs, ]
 
