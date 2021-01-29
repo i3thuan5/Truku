@@ -71,8 +71,8 @@ def truku(path: Union[str, Path], wav_files):
             for leku in sutiau['examples']:
                 if leku['pronounce']:
                     leku_imtong = basename(leku['pronounce'])
-                elif leku_imtong:
-                    text_dict[imtong] = leku['sentence']
+                if leku_imtong and not leku['sentence'].startswith('詞類'):
+                    text_dict[leku_imtong] = leku['sentence']
                     leku_imtong = None
 
     return text_dict
@@ -119,6 +119,17 @@ else:
 
         with open(paths.data / 'text_dict.pkl', 'wb') as f:
             pickle.dump(text_dict, f)
+    print(text_dict)
+
+    u_wav_files = []
+
+    for im in wav_files:
+        if splitext(basename(im))[0] in text_dict:
+            u_wav_files.append(im)
+
+    print(f'\n{len(u_wav_files)} {extension[1:]} files found in "{path}"\n')
+
+    # (oo')
 
     n_workers = max(1, args.num_workers)
 
@@ -133,10 +144,10 @@ else:
     pool = Pool(processes=n_workers)
     dataset = []
 
-    for i, (item_id, length) in enumerate(pool.imap_unordered(process_wav, wav_files), 1):
+    for i, (item_id, length) in enumerate(pool.imap_unordered(process_wav, u_wav_files), 1):
         dataset += [(item_id, length)]
-        bar = progbar(i, len(wav_files))
-        message = f'{bar} {i}/{len(wav_files)} '
+        bar = progbar(i, len(u_wav_files))
+        message = f'{bar} {i}/{len(u_wav_files)} '
         stream(message)
 
     with open(paths.data / 'dataset.pkl', 'wb') as f:
