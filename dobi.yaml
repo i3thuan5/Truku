@@ -17,6 +17,9 @@ alias=liah-giliau:
 alias=wav-giliau:
   tasks: [siatting, wav-giliau-job]
 
+alias=preprocess:
+  tasks: [siatting, preprocess-job, ]
+
 job=liah-giliau-job:
   use: ubuntu
   env:
@@ -75,29 +78,11 @@ image=ubuntu:
   tags: ['20.04']
   pull: once
 
-job=suisiann-giliau-pianma:
-  use: ubuntu
-  env:
-  - PANPUN={env.PANPUN}
-  command: |
-    bash -eux -c '
-      apt-get update
-      apt-get install -y sox
-      cp *csv /giliau/
-      find . -type d -exec mkdir -p /giliau/{} \;
-      find . -name "*wav" -exec sox {} -b 16 -c 1 -r 16k /giliau/{} \;
-    '
-  mounts: [punte_giliau, giliau, tshamsoo, data, ]
-  working-dir: /punte_giliau
-
 image=hunlian-khuanking:
   image: hunlian-khuanking
   context: hunlian-khuanking
 
-alias=preprocess:
-  tasks: [siatting, preprocess-tsau, ]
-
-job=preprocess-tsau:
+job=preprocess-job:
   use: hunlian-khuanking
   env:
   - PANPUN={env.PANPUN}

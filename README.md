@@ -13,7 +13,6 @@ Truku TTS
 ## 步
 1. 先掠 [SuiSiann-Dataset](https://suisiann-dataset.ithuan.tw/)，壓縮檔tháu--khui，會生做按呢
 ```
-.
 trv-e-dictionary-2017/
 ├── trv
 │   ├── a_{1}_@_2.1.mp3
@@ -28,6 +27,20 @@ trv-e-dictionary-2017/
 └── trv.json
 ```
 2. `dobi wav-giliau`，轉做tarotron 接受ê wav格式。而且降做16000Hz，合成較緊。
+```
+trv-e-dictionary-2017-wav/
+├── trv
+│   ├── a_{1}_@_2.1.mp3.wav
+│   ├── a_{1}_@_3.1.mp3.wav
+│   ├── a_{1}_@_4.1.mp3.wav
+│   ├── a_{1}.mp3.wav
+│   ├── ...
+│   ├── aba_{1}.mp3.wav
+│   ├── abi_{1}_@_1.1.mp3.wav
+│   ├── ...
+│   └── yuy_{1}.mp3.wav
+└── trv.json
+```
 3. `dobi preprocess`，產生tactorn格式
 4. `dobi tacotron`，訓練Tacotron模型
 5. `dobi tacotron-gta`，Tī tactorn訓練中，產生gta檔案
