@@ -38,11 +38,11 @@ job=wav-giliau-job:
     bash -eux -c '
       apt-get update
       apt-get install -y ffmpeg
-      cp *json /giliau/
+      cp ./*json /giliau/
       find . -type d -exec mkdir -p /giliau/{} \;
-      find . -name "*mp3" -exec ffmpeg -i {} -b 16 -c 1 -r 16k /giliau/{}.wav \;
+      find . -name "*mp3" -exec ffmpeg -i {} -c:a pcm_s16le -ac 1 -ar 16000 /giliau/{}.wav \;
     '
-  mounts: [punte_giliau, giliau, tshamsoo, data, ]
+  mounts: [punte_giliau, giliau, ]
   working-dir: /punte_giliau/
 
 mount=punte_giliau:
