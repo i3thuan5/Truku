@@ -7,7 +7,43 @@ meta:
   project: SuiSiann-WaveRNN
 
 env=siatting:
-  variables: [PANPUN=0.2]
+  variables:
+  - PANPUN=trv-e-dictionary-2017
+  - BANGTSI=https://www.dropbox.com/s/mbqy8xw85qpgqyy/trv-e-dictionary-2017.tar?dl=0
+
+alias=liah-giliau:
+  tasks: [siatting, liah-giliau-job]
+
+job=liah-giliau-job:
+  use: ubuntu
+  env:
+  - PANPUN={env.PANPUN}
+  - BANGTSI={env.BANGTSI}
+  command: |
+    bash -eux -c '
+      apt-get update
+      apt-get install -y wget
+      wget -O - $BANGTSI | tar -xvf - -C /punte_giliau
+    '
+  mounts: [punte_giliau, ]
+
+job=suisiann-giliau-pianma:
+  use: ubuntu
+  env:
+  - PANPUN={env.PANPUN}
+  command: |
+    bash -eux -c '
+      apt-get update
+      apt-get install -y sox
+      cp *csv /giliau/
+      find . -type d -exec mkdir -p /giliau/{} \;
+      find . -name "*wav" -exec sox {} -b 16 -c 1 -r 16k /giliau/{} \;
+    '
+  mounts: [punte_giliau, giliau, tshamsoo, data, ]
+  working-dir: /punte_giliau
+
+alias=suisiann-giliau:
+  tasks: [siatting, suisiann-giliau-pianma]
 
 mount=punte_giliau:
   bind: ./{env.PANPUN}
@@ -36,7 +72,7 @@ mount=checkpoints:
 
 image=ubuntu:
   image: ubuntu
-  tags: ['18.04']
+  tags: ['20.04']
   pull: once
 
 job=suisiann-giliau-pianma:
@@ -53,9 +89,6 @@ job=suisiann-giliau-pianma:
     '
   mounts: [punte_giliau, giliau, tshamsoo, data, ]
   working-dir: /punte_giliau
-
-alias=suisiann-giliau:
-  tasks: [siatting, suisiann-giliau-pianma]
 
 image=hunlian-khuanking:
   image: hunlian-khuanking
