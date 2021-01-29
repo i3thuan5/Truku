@@ -23,6 +23,15 @@ alias=preprocess-tacotron:
 alias=tacotron:
   tasks: [siatting, tacotron-job, ]
 
+alias=tacotron-gta:
+  tasks: [siatting, tacotron-gta-job, ]
+
+alias=preprocess-wavernn:
+  tasks: [siatting, preprocess-wavernn-job, ]
+
+alias=wavernn:
+  tasks: [siatting, wavernn-job, ]
+
 job=liah-giliau-job:
   use: ubuntu
   env:
@@ -113,7 +122,7 @@ job=tacotron-job:
     '
   mounts: [tshamsoo, data, checkpoints, ]
 
-job=tacotron-gta:
+job=tacotron-gta-job:
   use: hunlian-khuanking
   env:
   - CUDA_VISIBLE_DEVICES=0
@@ -126,10 +135,7 @@ job=tacotron-gta:
     '
   mounts: [tshamsoo, data, checkpoints, ]
 
-alias=preprocess-wavernn:
-  tasks: [siatting, preprocess-wavernn-tsau, ]
-
-job=preprocess-wavernn-tsau:
+job=preprocess-wavernn-job:
   use: hunlian-khuanking
   env:
   - PANPUN={env.PANPUN}
@@ -141,7 +147,7 @@ job=preprocess-wavernn-tsau:
     '
   mounts: [tshamsoo, data, ]
 
-job=wavernn:
+job=wavernn-job:
   use: hunlian-khuanking
   env:
   - CUDA_VISIBLE_DEVICES=0
