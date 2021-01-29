@@ -41,7 +41,7 @@ trv-e-dictionary-2017-wav/
 │   └── yuy_{1}.mp3.wav
 └── trv.json
 ```
-3. `dobi preprocess`，產生tactorn格式
+3. `dobi preprocess-tacotron`，產生tactorn格式
 4. `dobi tacotron`，訓練Tacotron模型
 5. `dobi tacotron-gta`，Tī tactorn訓練中，產生gta檔案
 6. `dobi preprocess-wavernn-tsau`，照gta檔案，產生wavernn需要ê`dataset.pkl`

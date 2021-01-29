@@ -17,7 +17,7 @@ alias=liah-giliau:
 alias=wav-giliau:
   tasks: [siatting, wav-giliau-job]
 
-alias=preprocess:
+alias=preprocess-tacotron:
   tasks: [siatting, preprocess-job, ]
 
 job=liah-giliau-job:
@@ -82,7 +82,7 @@ image=hunlian-khuanking:
   image: hunlian-khuanking
   context: hunlian-khuanking
 
-job=preprocess-job:
+job=preprocess-tacotron-job:
   use: hunlian-khuanking
   env:
   - PANPUN={env.PANPUN}
