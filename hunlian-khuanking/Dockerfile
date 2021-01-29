@@ -8,5 +8,4 @@ WORKDIR /WaveRNN
 
 ENV LANG C.UTF-8
 RUN pip install -r requirements.txt
-RUN pip install --upgrade librosa
-# RUN git pull
+RUN pip install --upgrade "librosa<0.8"
