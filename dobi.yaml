@@ -18,7 +18,10 @@ alias=wav-giliau:
   tasks: [siatting, wav-giliau-job]
 
 alias=preprocess-tacotron:
-  tasks: [siatting, preprocess-job, ]
+  tasks: [siatting, preprocess-tacotron-job, ]
+
+alias=tacotron:
+  tasks: [siatting, tacotron-job, ]
 
 job=liah-giliau-job:
   use: ubuntu
@@ -62,15 +65,15 @@ mount=tshamsoo:
   read-only: true
 
 mount=data:
-  bind: ./data/
+  bind: ./{env.PANPUN}-data/
   path: /data/
 
 mount=outputs:
-  bind: ./model_outputs/
+  bind: ./{env.PANPUN}-model_outputs/
   path: /WaveRNN/model_outputs/
 
 mount=checkpoints:
-  bind: ./checkpoints/
+  bind: ./{env.PANPUN}-checkpoints/
   path: /WaveRNN/checkpoints/
 
 image=ubuntu:
@@ -96,10 +99,11 @@ job=preprocess-tacotron-job:
     '
   mounts: [giliau, tshamsoo, data, ]
 
-job=tacotron:
+job=tacotron-job:
   use: hunlian-khuanking
   env:
   - CUDA_VISIBLE_DEVICES=0
+  - PANPUN={env.PANPUN}
   command: |
     bash -eux -c '
       cp /tshamsoo/hparams.py .
