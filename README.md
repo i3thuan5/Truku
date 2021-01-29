@@ -14,20 +14,20 @@ Truku TTS
 1. 先掠 [SuiSiann-Dataset](https://suisiann-dataset.ithuan.tw/)，壓縮檔tháu--khui，會生做按呢
 ```
 .
-├── 0.2
-│   ├── ImTong
-│   │   ├── SuiSiann_0001.wav
-│   │   ├── SuiSiann_0002.wav
-│   │   ├── SuiSiann_0003.wav
-│   │   ├── SuiSiann_0004.wav
-│   │   ├── SuiSiann_0005.wav
-│   │    ...
-│   └── SuiSiann.csv
-├── dobi.yaml
-├── Dockerfile
-...
+trv-e-dictionary-2017/
+├── trv
+│   ├── a_{1}_@_2.1.mp3
+│   ├── a_{1}_@_3.1.mp3
+│   ├── a_{1}_@_4.1.mp3
+│   ├── a_{1}.mp3
+│   ├── ...
+│   ├── aba_{1}.mp3
+│   ├── abi_{1}_@_1.1.mp3
+│   ├── ...
+│   └── yuy_{1}.mp3
+└── trv.json
 ```
-2. `dobi suisiann-giliau`，轉做22050Hz
+2. `dobi wav-giliau`，轉做tarotron 接受ê wav格式。而且降做16000Hz，合成較緊。
 3. `dobi preprocess`，產生tactorn格式
 4. `dobi tacotron`，訓練Tacotron模型
 5. `dobi tacotron-gta`，Tī tactorn訓練中，產生gta檔案
@@ -43,4 +43,5 @@ docker run --rm -ti -e CUDA_VISIBLE_DEVICES=1 -v `pwd`/kiatko:/kiatko -p 5000:50
 # CPU
 docker run --rm -ti -e FORCE_CPU=True -v `pwd`/kiatko:/kiatko -p 5000:5000 suisiann-wavernn:SuiSiann-WaveRNN-HokBu-fafoy
 ```
+
 
