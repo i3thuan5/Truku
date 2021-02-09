@@ -67,13 +67,10 @@ def truku(path: Union[str, Path], wav_files):
             if sutiau['pronounce']:
                 imtong = basename(sutiau['pronounce'])
                 text_dict[imtong] = sutiau['name']
-            leku_imtong = None
             for leku in sutiau['examples']:
                 if leku['pronounce']:
                     leku_imtong = basename(leku['pronounce'])
-                if leku_imtong and not leku['sentence'].startswith('詞類'):
                     text_dict[leku_imtong] = leku['sentence']
-                    leku_imtong = None
 
     return text_dict
 
