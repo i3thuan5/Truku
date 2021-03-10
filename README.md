@@ -11,7 +11,7 @@ Truku TTS
 `dobi quick`，看`model_outputs/`敢有正常合成音檔。
 
 ## 步
-1. 先掠 [SuiSiann-Dataset](https://suisiann-dataset.ithuan.tw/)，壓縮檔tháu--khui，會生做按呢
+1. 先用`dobi liah-giliau`，會掠語料，好勢會生做按呢
 ```
 trv-e-dictionary-2017/
 ├── trv
