@@ -55,10 +55,12 @@ job=tsuan-pianma-job:
   command: |
     bash -eux -c '
       apt-get update
-      apt-get install -y ffmpeg
+      apt-get install -y ffmpeg sox
       cp ./*json /giliau/
-      find . -type d -exec mkdir -p /giliau/{} \;
-      find . -name "*mp3" -exec ffmpeg -i {} -c:a pcm_s16le -ac 1 -ar 16000 /giliau/{}.wav \;
+      find . -type d -exec mkdir -p /tsiamsi/{} /giliau/{} \;
+      find . -name "*.mp3" -exec ffmpeg -i {} -c:a pcm_s16le -ac 1 -ar 16000 /tsiamsi/{}.wav \;
+      find . -name "*.mp3" -exec sox /tsiamsi/{}.wav /giliau/{}.wav silence 1 0.1 0.1% reverse silence 1 0.1 0.1% reverse \;
+      find /giliau/mp3/ -size -1000c -delete
     '
   mounts: [punte_giliau, giliau, ]
   working-dir: /punte_giliau/

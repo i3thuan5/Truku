@@ -26,7 +26,7 @@ trv-e-dictionary-2017/
 │   └── yuy_{1}.mp3
 └── trv.json
 ```
-2. `dobi wav-giliau`，轉做tarotron 接受ê wav格式。而且降做16000Hz，合成較緊。
+2. `dobi tsuan-pianma`，1. 轉做tarotron 接受ê wav格式。2. Tok頭尾無聲ê部份，tacotron較會收斂。3. 而且wave降做16000Hz，合成較緊。
 ```
 trv-e-dictionary-2017-wav/
 ├── trv
