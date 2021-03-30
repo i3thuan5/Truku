@@ -43,8 +43,8 @@ trv-e-dictionary-2017-wav/
 ```
 3. `dobi preprocess-tacotron`，產生tactorn格式
 4. `dobi tacotron`，訓練Tacotron模型
-5. `dobi tacotron-gta`，Tī tactorn訓練中，產生gta檔案
-6. `dobi preprocess-wavernn-tsau`，照gta檔案，產生wavernn需要ê`dataset.pkl`
+5. `dobi tacotron-gta`，Tī tacotron訓練中，產生gta檔案
+6. `dobi preprocess-wavernn`，照gta檔案，產生wavernn需要ê`dataset.pkl`
 7. `dobi wavernn`，訓練WaveRNN模型
 8. `dobi huatsiann`，合成語句
 

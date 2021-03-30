@@ -185,18 +185,6 @@ job=huatsiann-job:
     '
   mounts: [tshamsoo, checkpoints, outputs, ]
 
-job=quick:
-  use: hunlian-khuanking
-  env:
-  - CUDA_VISIBLE_DEVICES=1
-  command: |
-    bash -eux -c '
-      sed -i "s/required=True, //g" gen_tacotron.py
-      time python quick_start.py --input_text "What will happen if I run this command?"
-      mv quick_start model_outputs
-    '
-  mounts: [tshamsoo, checkpoints, outputs]
-
 image=hokbu-khuanking:
   image: suisiann-wavernn
   context: .
