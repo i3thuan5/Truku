@@ -4,11 +4,10 @@ Truku TTS
 自 https://github.com/fatchord/WaveRNN 來訓練。
 
 ## 安
-- dobi
-- sox
-
-## 檢查環境
-`dobi quick`，看`model_outputs/`敢有正常合成音檔。
+- [dobi](https://github.com/dnephin/dobi)
+- [docker](https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/)
+- [docker-compose](https://docs.docker.com/compose/install/)
+- 設定docker權限`sudo usermod -aG docker $USER`
 
 ## 步
 1. 先用`dobi liah-giliau`，會掠語料，好勢會生做按呢
