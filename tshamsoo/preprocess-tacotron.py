@@ -1,6 +1,5 @@
 import argparse
 import json
-import glob
 from multiprocessing import Pool, cpu_count
 from os.path import splitext, basename
 from pathlib import Path
@@ -141,7 +140,9 @@ else:
     pool = Pool(processes=n_workers)
     dataset = []
 
-    for i, (item_id, length) in enumerate(pool.imap_unordered(process_wav, u_wav_files), 1):
+    for i, (item_id, length) in enumerate(
+        pool.imap_unordered(process_wav, u_wav_files), 1
+    ):
         dataset += [(item_id, length)]
         bar = progbar(i, len(u_wav_files))
         message = f'{bar} {i}/{len(u_wav_files)} '
@@ -150,4 +151,9 @@ else:
     with open(paths.data / 'dataset.pkl', 'wb') as f:
         pickle.dump(dataset, f)
 
-    print('\n\nCompleted. Ready to run "python train_tacotron.py" or "python train_wavernn.py". \n')
+    print(
+        '\n\n'
+        'Completed. '
+        'Ready to run "python train_tacotron.py" '
+        'or "python train_wavernn.py". \n'
+    )
