@@ -1,13 +1,8 @@
 import argparse
-from csv import DictReader
-import glob
-from multiprocessing import Pool, cpu_count
 from os.path import splitext, basename
 import pickle
 
 from utils import hparams as hp
-from utils.display import *
-from utils.dsp import *
 from utils.files import get_files
 from utils.paths import Paths
 
@@ -42,10 +37,8 @@ paths = Paths(hp.data_path, hp.voc_model_id, hp.tts_model_id)
 print(f'\n{len(wav_files)} {extension[1:]} files found in "{path}"\n')
 
 if len(wav_files) == 0:
-
     print('Please point wav_path in hparams.py to your dataset,')
     print('or use the --path option.\n')
-
 else:
     if not hp.ignore_tts:
         u_tihleh = set()
