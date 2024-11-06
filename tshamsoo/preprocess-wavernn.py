@@ -3,9 +3,7 @@ from csv import DictReader
 import glob
 from multiprocessing import Pool, cpu_count
 from os.path import splitext, basename
-from pathlib import Path
 import pickle
-from typing import Union
 
 from utils import hparams as hp
 from utils.display import *
@@ -49,7 +47,6 @@ if len(wav_files) == 0:
     print('or use the --path option.\n')
 
 else:
-
     if not hp.ignore_tts:
         u_tihleh = set()
         for sootsai in wav_files:
