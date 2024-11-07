@@ -13,40 +13,7 @@ Truku TTS
 
 ## 步
 
-1. 先用`dobi liah-giliau`，會掠語料，好勢會生做按呢
-
-```plain
-trv-e-dictionary-2017/
-├── trv
-│   ├── a_{1}_@_2.1.mp3
-│   ├── a_{1}_@_3.1.mp3
-│   ├── a_{1}_@_4.1.mp3
-│   ├── a_{1}.mp3
-│   ├── ...
-│   ├── aba_{1}.mp3
-│   ├── abi_{1}_@_1.1.mp3
-│   ├── ...
-│   └── yuy_{1}.mp3
-└── trv.json
-```
-
-2. `dobi tsuan-pianma`，1. 轉做tarotron 接受ê wav格式。2. Tok頭尾無聲ê部份，tacotron較會收斂。3. 而且wave降做16000Hz，合成較緊。
-
-```plain
-trv-e-dictionary-2017-wav/
-├── trv
-│   ├── a_{1}_@_2.1.mp3.wav
-│   ├── a_{1}_@_3.1.mp3.wav
-│   ├── a_{1}_@_4.1.mp3.wav
-│   ├── a_{1}.mp3.wav
-│   ├── ...
-│   ├── aba_{1}.mp3.wav
-│   ├── abi_{1}_@_1.1.mp3.wav
-│   ├── ...
-│   └── yuy_{1}.mp3.wav
-└── trv.json
-```
-
+1. `dobi tsuan-pianma`，wave降做16kHz，合成較緊。
 3. `dobi preprocess-tacotron`，產生tactorn格式
 4. `dobi tacotron`，訓練Tacotron模型
 5. `dobi tacotron-gta`，Tī tacotron訓練中，產生gta檔案

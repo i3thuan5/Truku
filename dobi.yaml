@@ -4,11 +4,7 @@ meta:
 
 env=siatting:
   variables:
-    - PANPUN=trv-e-dictionary-2017
-    - BANGTSI=https://www.dropbox.com/s/mbqy8xw85qpgqyy/trv-e-dictionary-2017.tar?dl=0
-
-alias=liah-giliau:
-  tasks: [siatting, liah-giliau-job]
+    - PANPUN=太魯閣語
 
 alias=tsuan-pianma:
   tasks: [siatting, tsuan-pianma-job]
@@ -31,19 +27,6 @@ alias=wavernn:
 alias=huatsiann:
   tasks: [siatting, huatsiann-job]
 
-job=liah-giliau-job:
-  use: ubuntu
-  env:
-    - PANPUN={env.PANPUN}
-    - BANGTSI={env.BANGTSI}
-  command: |
-    bash -eux -c '
-      apt-get update
-      apt-get install -y wget
-      wget -O - $BANGTSI | tar -xvf - -C /punte_giliau
-    '
-  mounts: [punte_giliau]
-
 job=tsuan-pianma-job:
   use: ubuntu
   env:
@@ -51,21 +34,15 @@ job=tsuan-pianma-job:
   command: |
     bash -eux -c '
       apt-get update
-      apt-get install -y ffmpeg sox
-      cp ./*json /giliau/
-      find . -type d -exec mkdir -p /tsiamsi/{} /giliau/{} \;
-      find . -name "*.mp3" -exec ffmpeg -i {} \
-        -c:a pcm_s16le -ac 1 -ar 16000 /tsiamsi/{}.wav \;
-      find . -name "*.mp3" -exec sox /tsiamsi/{}.wav /giliau/{}.wav \
-        silence 1 0.1 0.1% reverse silence 1 0.1 0.1% reverse \;
-      find /giliau/ -name '*.mp3.wav' -size -1000c -delete
+      apt-get install -y ffmpeg
+      rm -rf 16k/
+      find . -type d -exec mkdir -p /limsi/{} \;
+      find . -name "*.wav" -exec ffmpeg -i {} \
+        -c:a pcm_s16le -ac 1 -ar 16000 /limsi/{}.wav \;
+      mv /limsi/ 16k/
     '
-  mounts: [punte_giliau, giliau]
-  working-dir: /punte_giliau/
-
-mount=punte_giliau:
-  bind: ./{env.PANPUN}
-  path: /punte_giliau/
+  mounts: [giliau]
+  working-dir: /giliau/
 
 mount=giliau:
   bind: ./{env.PANPUN}-wav/
@@ -90,7 +67,7 @@ mount=checkpoints:
 
 image=ubuntu:
   image: ubuntu
-  tags: ['20.04']
+  tags: ['24.04']
   pull: once
 
 image=hunlian-khuanking:
