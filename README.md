@@ -14,9 +14,9 @@ Truku TTS
 ## 步
 
 1. `dobi tsuan-pianma`，wave降做16kHz，合成較緊。
-2. `docker compose -f docker-compose-gpu-hunlian.yml build`
-3. `dobi preprocess-tacotron`，產生tactorn格式
-4. `dobi tacotron`，訓練Tacotron模型
+2. `dobi preprocess-tacotron`，產生tactorn格式
+3. `docker compose -f docker-compose-gpu-hunlian.yml build`，準備Tacotron docker
+4. `docker compose -f docker-compose-gpu-hunlian.yml run --rm hunlian-tacotron`，訓練Tacotron模型
 5. `dobi tacotron-gta`，Tī tacotron訓練中，產生gta檔案
 6. `dobi preprocess-wavernn`，照gta檔案，產生wavernn需要ê`dataset.pkl`
 7. `dobi wavernn`，訓練WaveRNN模型

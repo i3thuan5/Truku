@@ -6,8 +6,8 @@ services:
     build: ./hunlian-khuanking
     volumes:
       - ./tshamsoo/:/tshamsoo/:ro
-      - ./太魯閣語-data/:/data/
-      - ./太魯閣語-model_outputs/:/WaveRNN/model_outputs/
+      - ./heci/太魯閣語/data/:/data/
+      - ./heci/太魯閣語/checkpoints/:/checkpoints/
     deploy:
       resources:
         reservations:

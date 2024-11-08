@@ -54,16 +54,16 @@ mount=tshamsoo:
   read-only: true
 
 mount=data:
-  bind: ./{env.PANPUN}-data/
+  bind: ./heci/{env.PANPUN}/data/
   path: /data/
 
-mount=outputs:
-  bind: ./{env.PANPUN}-model_outputs/
-  path: /WaveRNN/model_outputs/
-
 mount=checkpoints:
-  bind: ./{env.PANPUN}-checkpoints/
+  bind: ./heci/{env.PANPUN}/checkpoints/
   path: /WaveRNN/checkpoints/
+
+mount=wavernn_outputs:
+  bind: ./heci/{env.PANPUN}/model_outputs/
+  path: /WaveRNN/model_outputs/
 
 image=ubuntu:
   image: ubuntu
@@ -141,7 +141,7 @@ job=wavernn-job:
       sed -i "s/dataset.pkl/dataset_wavernn.pkl/g" utils/dataset.py
       python train_wavernn.py --gta
     '
-  mounts: [tshamsoo, data, checkpoints, outputs]
+  mounts: [tshamsoo, data, checkpoints, wavernn_outputs]
 
 job=huatsiann-job:
   use: hunlian-khuanking
@@ -158,7 +158,7 @@ job=huatsiann-job:
       time python gen_tacotron.py --input_text "$KU" wavernn
       time python gen_tacotron.py --input_text "$KU" wavernn --unbatched
     '
-  mounts: [tshamsoo, checkpoints, outputs]
+  mounts: [tshamsoo, checkpoints, wavernn_outputs]
 
 image=hokbu-khuanking:
   image: suisiann-wavernn
