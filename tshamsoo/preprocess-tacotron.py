@@ -61,7 +61,7 @@ def truku(path: Union[str, Path], wav_files):
         for 行 in DictReader(f):
             檔名 = 'E-TV001-{:0>4}'.format(行['錄音編號'])
             if 檔名 + '.wav' in u_tihleh:
-                text_dict[檔名] = 行['太魯閣語']
+                text_dict[檔名] = 行['太魯閣語'].lower()
 
     return text_dict
 
