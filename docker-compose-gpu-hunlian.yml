@@ -6,7 +6,7 @@ services:
     build: ./hunlian-khuanking
     volumes:
       - ./tshamsoo/:/tshamsoo/:ro
-      - ./heci/太魯閣語/data/:/WaveRNN/data/
+      - ./heci/太魯閣語/data/:/data/
       - ./heci/太魯閣語/checkpoints/:/WaveRNN/checkpoints/
     deploy:
       resources:
