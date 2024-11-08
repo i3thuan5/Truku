@@ -84,7 +84,7 @@ job=preprocess-tacotron-job:
       cp /tshamsoo/preprocess-tacotron.py .
       cp /tshamsoo/text_init.py utils/text/__init__.py
       cp /tshamsoo/symbols.py utils/text/symbols.py
-      python preprocess-tacotron.py --path /giliau/
+      python preprocess-tacotron.py --path /giliau/16k/
     '
   mounts: [giliau, tshamsoo, data]
 

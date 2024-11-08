@@ -1,5 +1,4 @@
 import argparse
-import json
 from multiprocessing import Pool, cpu_count
 from os.path import splitext, basename
 from pathlib import Path
@@ -11,6 +10,7 @@ from utils.display import *
 from utils.dsp import *
 from utils.files import get_files
 from utils.paths import Paths
+from csv import DictReader
 
 
 # Helper functions for argument types
@@ -25,7 +25,7 @@ def valid_n_workers(num):
 parser = argparse.ArgumentParser(
     description='Preprocessing for WaveRNN and Tacotron')
 parser.add_argument(
-    '--path', '-p',
+    '--path', '-p', type=Path,
     help='directly point to dataset path (overrides hparams.wav_path'
 )
 parser.add_argument(
@@ -52,24 +52,16 @@ path = args.path
 
 
 def truku(path: Union[str, Path], wav_files):
-    json_file = get_files(path, extension='.json')
-
-    assert len(json_file) == 1
-
     u_tihleh = set()
     for sootsai in wav_files:
         u_tihleh.add(basename(sootsai))
     text_dict = {}
 
-    with open(json_file[0], encoding='utf-8') as f:
-        for sutiau in json.load(f):
-            if sutiau['pronounce']:
-                imtong = basename(sutiau['pronounce'])
-                text_dict[imtong] = sutiau['name']
-            for leku in sutiau['examples']:
-                if leku['pronounce']:
-                    leku_imtong = basename(leku['pronounce'])
-                    text_dict[leku_imtong] = leku['sentence']
+    with open(path / '..' / 'Truku.csv', encoding='utf-8') as f:
+        for 行 in DictReader(f):
+            檔名 = 'E-TV001-{:0>4}'.format(行['錄音編號'])
+            if 檔名 + '.wav' in u_tihleh:
+                text_dict[檔名] = 行['太魯閣語']
 
     return text_dict
 
@@ -108,11 +100,8 @@ if len(wav_files) == 0:
     print('or use the --path option.\n')
 
 else:
-
     if not hp.ignore_tts:
-
         text_dict = truku(path, wav_files)
-
         with open(paths.data / 'text_dict.pkl', 'wb') as f:
             pickle.dump(text_dict, f)
     print(text_dict)
