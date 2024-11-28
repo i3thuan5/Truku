@@ -1,12 +1,12 @@
-
-# CONFIG -----------------------------------------------------------------------------------------------------------#
-
-# Here are the input and output data paths (Note: you can override wav_path in preprocess.py)
+# Here are the input and output data paths
+# (Note: you can override wav_path in preprocess.py)
 wav_path = '/path/to/wav_files/'
 data_path = '/data/'
 
-# model ids are separate - that way you can use a new tts with an old wavernn and vice versa
-# NB: expect undefined behaviour if models were trained on different DSP settings
+# model ids are separate - that way you can use a new tts with an old wavernn
+# and vice versa
+# NB: expect undefined behaviour if models were trained
+# on different DSP settings
 voc_model_id = 'truku_raw'
 tts_model_id = 'truku_lsa_smooth_attention'
 
@@ -14,24 +14,24 @@ tts_model_id = 'truku_lsa_smooth_attention'
 ignore_tts = False
 
 
-# DSP --------------------------------------------------------------------------------------------------------------#
+# DSP ----------------------
 
 # Settings for all models
 sample_rate = 16000
 n_fft = 2048
 fft_bins = n_fft // 2 + 1
 num_mels = 80
-hop_length = 200                    # 12.5ms - in line with Tacotron 2 paper
-win_length = 800                    # 50ms - same reason as above
+hop_length = 200            # 12.5ms - in line with Tacotron 2 paper
+win_length = 800            # 50ms - same reason as above
 fmin = 40
 min_level_db = -100
 ref_level_db = 20
-bits = 9                            # bit depth of signal
-mu_law = True                       # Recommended to suppress noise if using raw bits in hp.voc_mode below
-peak_norm = False                   # Normalise to the peak of each wav file
+bits = 9                    # bit depth of signal
+mu_law = True               # Recommended to suppress noise if using raw bits in hp.voc_mode below
+peak_norm = False           # Normalise to the peak of each wav file
 
 
-# WAVERNN / VOCODER ------------------------------------------------------------------------------------------------#
+# WAVERNN / VOCODER ---------
 
 
 # Model Hparams
@@ -60,11 +60,12 @@ voc_target = 4_000                  # target number of samples to be generated i
 voc_overlap = 400                   # number of samples for crossfading between batches
 
 
-# TACOTRON/TTS -----------------------------------------------------------------------------------------------------#
+# TACOTRON/TTS -----------
 
 
 # Model Hparams
-tts_embed_dims = 256                # embedding dimension for the graphemes/phoneme inputs
+# embedding dimension for the graphemes/phoneme inputs
+tts_embed_dims = 256
 tts_encoder_dims = 128
 tts_decoder_dims = 256
 tts_postnet_dims = 128
@@ -74,25 +75,33 @@ tts_postnet_K = 8
 tts_num_highways = 4
 tts_dropout = 0.5
 tts_cleaner_names = ['basic_cleaners']
-tts_stop_threshold = -3.4           # Value below which audio generation ends.
-                                    # For example, for a range of [-4, 4], this
-                                    # will terminate the sequence at the first
-                                    # frame that has all values < -3.4
+# Value below which audio generation ends.
+# For example, for a range of [-4, 4], this
+# will terminate the sequence at the first
+# frame that has all values < -3.4
+tts_stop_threshold = -3.4
 
 # Training
 
-tts_schedule = [(12, 1e-3,   5_000,  32),   # progressive training schedule
-                (7,  1e-3,  10_000,  32),   # (r, lr, step, batch_size)
-                (5,  1e-4, 100_000,  32),
-                (2,  1e-4, 180_000,  16),
-                (2,  1e-4, 350_000,  8)]
+# progressive training schedule
+# (r, lr, step, batch_size)
+tts_schedule = [
+    (12, 1e-3,   5_000,  32),
+    (7,  1e-3,  10_000,  32),
+    (5,  1e-4, 100_000,  32),
+    (2,  1e-4, 180_000,  16),
+    (2,  1e-4, 350_000,  8),
+]
 
-tts_max_mel_len = 1250              # if you have a couple of extremely long spectrograms you might want to use this
-tts_bin_lengths = True              # bins the spectrogram lengths before sampling in data loader - speeds up training
-tts_clip_grad_norm = 1.0            # clips the gradient norm to prevent explosion - set to None if not needed
-tts_checkpoint_every = 2_000        # checkpoints the model every X steps
-# TODO: tts_phoneme_prob = 0.0              # [0 <-> 1] probability for feeding model phonemes vrs graphemes
-
-
-# ------------------------------------------------------------------------------------------------------------------#
-
+# if you have a couple of extremely long spectrograms
+# you might want to use this
+tts_max_mel_len = 1250
+# bins the spectrogram lengths before sampling in data loader
+# - speeds up training
+tts_bin_lengths = True
+# clips the gradient norm to prevent explosion - set to None if not needed
+tts_clip_grad_norm = 1.0
+# checkpoints the model every X steps
+tts_checkpoint_every = 2_000
+# [0 <-> 1] probability for feeding model phonemes vrs graphemes
+# TODO: tts_phoneme_prob = 0.0
