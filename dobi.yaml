@@ -4,11 +4,7 @@ meta:
 
 env=siatting:
   variables:
-    - PANPUN=trv-e-dictionary-2017
-    - BANGTSI=https://www.dropbox.com/s/mbqy8xw85qpgqyy/trv-e-dictionary-2017.tar?dl=0
-
-alias=liah-giliau:
-  tasks: [siatting, liah-giliau-job]
+    - PANPUN=太魯閣語
 
 alias=tsuan-pianma:
   tasks: [siatting, tsuan-pianma-job]
@@ -31,19 +27,6 @@ alias=wavernn:
 alias=huatsiann:
   tasks: [siatting, huatsiann-job]
 
-job=liah-giliau-job:
-  use: ubuntu
-  env:
-    - PANPUN={env.PANPUN}
-    - BANGTSI={env.BANGTSI}
-  command: |
-    bash -eux -c '
-      apt-get update
-      apt-get install -y wget
-      wget -O - $BANGTSI | tar -xvf - -C /punte_giliau
-    '
-  mounts: [punte_giliau]
-
 job=tsuan-pianma-job:
   use: ubuntu
   env:
@@ -51,24 +34,18 @@ job=tsuan-pianma-job:
   command: |
     bash -eux -c '
       apt-get update
-      apt-get install -y ffmpeg sox
-      cp ./*json /giliau/
-      find . -type d -exec mkdir -p /tsiamsi/{} /giliau/{} \;
-      find . -name "*.mp3" -exec ffmpeg -i {} \
-        -c:a pcm_s16le -ac 1 -ar 16000 /tsiamsi/{}.wav \;
-      find . -name "*.mp3" -exec sox /tsiamsi/{}.wav /giliau/{}.wav \
-        silence 1 0.1 0.1% reverse silence 1 0.1 0.1% reverse \;
-      find /giliau/ -name '*.mp3.wav' -size -1000c -delete
+      DEBIAN_FRONTEND=noninteractive TZ=Asia/Taipei apt-get install -y ffmpeg
+      rm -rf 16k/
+      find . -type d -exec mkdir -p /limsi/{} \;
+      find . -name "*.wav" -exec ffmpeg -i {} \
+        -c:a pcm_s16le -ac 1 -ar 16000 /limsi/{} \;
+      mv /limsi/ 16k/
     '
-  mounts: [punte_giliau, giliau]
-  working-dir: /punte_giliau/
-
-mount=punte_giliau:
-  bind: ./{env.PANPUN}
-  path: /punte_giliau/
+  mounts: [giliau]
+  working-dir: /giliau/
 
 mount=giliau:
-  bind: ./{env.PANPUN}-wav/
+  bind: ./giliau/{env.PANPUN}
   path: /giliau/
 
 mount=tshamsoo:
@@ -77,20 +54,20 @@ mount=tshamsoo:
   read-only: true
 
 mount=data:
-  bind: ./{env.PANPUN}-data/
+  bind: ./heci/{env.PANPUN}/data/
   path: /data/
 
-mount=outputs:
-  bind: ./{env.PANPUN}-model_outputs/
-  path: /WaveRNN/model_outputs/
-
 mount=checkpoints:
-  bind: ./{env.PANPUN}-checkpoints/
+  bind: ./heci/{env.PANPUN}/checkpoints/
   path: /WaveRNN/checkpoints/
+
+mount=wavernn_outputs:
+  bind: ./heci/{env.PANPUN}/model_outputs/
+  path: /WaveRNN/model_outputs/
 
 image=ubuntu:
   image: ubuntu
-  tags: ['20.04']
+  tags: ['24.04']
   pull: once
 
 image=hunlian-khuanking:
@@ -107,7 +84,7 @@ job=preprocess-tacotron-job:
       cp /tshamsoo/preprocess-tacotron.py .
       cp /tshamsoo/text_init.py utils/text/__init__.py
       cp /tshamsoo/symbols.py utils/text/symbols.py
-      python preprocess-tacotron.py --path /giliau/
+      python preprocess-tacotron.py --path /giliau/16k/
     '
   mounts: [giliau, tshamsoo, data]
 
@@ -164,7 +141,7 @@ job=wavernn-job:
       sed -i "s/dataset.pkl/dataset_wavernn.pkl/g" utils/dataset.py
       python train_wavernn.py --gta
     '
-  mounts: [tshamsoo, data, checkpoints, outputs]
+  mounts: [tshamsoo, data, checkpoints, wavernn_outputs]
 
 job=huatsiann-job:
   use: hunlian-khuanking
@@ -181,7 +158,7 @@ job=huatsiann-job:
       time python gen_tacotron.py --input_text "$KU" wavernn
       time python gen_tacotron.py --input_text "$KU" wavernn --unbatched
     '
-  mounts: [tshamsoo, checkpoints, outputs]
+  mounts: [tshamsoo, checkpoints, wavernn_outputs]
 
 image=hokbu-khuanking:
   image: suisiann-wavernn

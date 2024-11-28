@@ -1,0 +1,22 @@
+---
+services:
+  hunlian-tacotron:
+    build: ./hunlian-khuanking
+    volumes:
+      - ./tshamsoo/:/tshamsoo/:ro
+      - ./heci/太魯閣語/data/:/data/
+      - ./heci/太魯閣語/checkpoints/:/WaveRNN/checkpoints/
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: |
+      bash -eux -c '
+        cp /tshamsoo/hparams.py .
+        cp /tshamsoo/text_init.py utils/text/__init__.py
+        cp /tshamsoo/symbols.py utils/text/symbols.py
+        python train_tacotron.py
+      '
